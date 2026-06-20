@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_24ssp"
+        android:layout_marginTop="@dimen/_15ssp"
+        android:layout_marginEnd="@dimen/_24ssp"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_8ssp"
+        app:boxCornerRadiusBottomStart="@dimen/_8ssp"
+        app:boxCornerRadiusTopEnd="@dimen/_8ssp"
+        app:boxCornerRadiusTopStart="@dimen/_8ssp"
+        app:hintTextColor="#CE93D8"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColorHint="@color/hintColor"
+            android:minHeight="@dimen/_40ssp"
+            android:paddingStart="@dimen/_13ssp"
+            android:paddingTop="@dimen/_7ssp"
+            android:paddingEnd="@dimen/_13ssp"
+            android:paddingBottom="@dimen/_7ssp"
+            android:textSize="@dimen/_13ssp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

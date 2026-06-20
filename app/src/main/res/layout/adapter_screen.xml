@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/_14ssp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@android:color/darker_gray"
+        app:strokeWidth="@dimen/_1ssp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_14ssp"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:fontFamily="@font/sans_regular"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/_14ssp" />
+
+            <TextView
+                android:id="@+id/txtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_14ssp"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:fontFamily="@font/sans_regular"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/_17ssp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/layoutBackGround"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/_5ssp"
+                android:paddingBottom="@dimen/_5ssp">
+
+                <TextView
+                    android:id="@+id/textSerialName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_14ssp"
+                    android:fontFamily="@font/sans_regular"
+                    android:text="@string/serial_number"
+                    android:textSize="@dimen/_16ssp" />
+
+                <TextView
+                    android:id="@+id/textSerialNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_14ssp"
+                    android:fontFamily="@font/sans_regular"
+                    android:textSize="@dimen/_14ssp" />
+
+                <!-- Spacer pushes checkbox to end -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_7ssp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFEBEE" />
+</LinearLayout>
