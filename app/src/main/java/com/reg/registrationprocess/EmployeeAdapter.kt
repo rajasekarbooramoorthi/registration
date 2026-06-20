@@ -47,7 +47,7 @@ class EmployeeAdapter(
 
         val serialNumber = list[safePos][TOKEN_NUMBER]?.toIntOrNull() ?: 0
         val serialNumberText = (serialNumber + 1).toString()
-
+        val autoInId = list[safePos][TOKEN_NUMBER]?.toInt() ?: 0
         holder.binding.textSerialNumber.text = serialNumberText
         holder.binding.txtEmail.text = list[safePos]["Email"] ?: list[safePos]["email"]
         holder.binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
@@ -61,6 +61,9 @@ class EmployeeAdapter(
                 ?: return@setOnCheckedChangeListener
 
             listenerInterface.checkBox(id, status)
+        }
+        holder.binding.icAdd.setOnClickListener {
+            listenerInterface.edit(autoInId)
         }
     }
 

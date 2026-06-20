@@ -67,7 +67,9 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
 
         findViewById<AppCompatImageView>(R.id.ic_add)
             .setOnClickListener {
-                startActivity(Intent(this@MainActivity, ActivityAdd::class.java))
+                val intent = Intent(this@MainActivity, ActivityAdd::class.java)
+                intent.putExtra("id", "")
+                startActivity(intent)
             }
 
         findViewById<AppCompatImageView>(R.id.ic_reset)
@@ -174,6 +176,13 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
 
     override fun checkBox(id: Int, status: Int) {
         dbHelper.updateTokenStatus(id, status)
+    }
+
+
+    override fun edit(id: Int) {
+        val intent = Intent(this@MainActivity, ActivityAdd::class.java)
+        intent.putExtra("id", id)
+        startActivity(intent)
     }
 
 }

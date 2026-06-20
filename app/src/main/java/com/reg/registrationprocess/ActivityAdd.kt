@@ -18,6 +18,7 @@ class ActivityAdd : AppCompatActivity() {
     private lateinit var binding: ActivityAddBinding
     private lateinit var adapter: AddDataAdapter
     private lateinit var dbHelper: DynamicDBHelper
+    private var id: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,27 +27,56 @@ class ActivityAdd : AppCompatActivity() {
         setContentView(binding.root)
         dbHelper = DynamicDBHelper(this)
         binding.recyclerviewAdd.layoutManager = LinearLayoutManager(this)
-        val columns = dbHelper.getColumnNames(REGISTRATION_TABLE)
 
-        val list = columns.map {
-            DynamicField(it)
-        }.toMutableList()
+        id = intent.getIntExtra("id", 0)
 
-        adapter = AddDataAdapter(list)
-        binding.recyclerviewAdd.adapter = adapter
+
+
+
+        if (id == 0) {
+            val columns = dbHelper.getColumnNames(REGISTRATION_TABLE)
+            val list = columns.map {
+                DynamicField(it)
+            }.toMutableList()
+            adapter = AddDataAdapter(list)
+            binding.recyclerviewAdd.adapter = adapter
+        } else {
+            val row = dbHelper.getDataByTokenNumber(REGISTRATION_TABLE, id)
+
+            val list = row?.map { (key, value) ->
+                DynamicField(
+                    columnName = key,
+                    value = value
+                )
+            }?.toMutableList() ?: mutableListOf()
+
+            adapter = AddDataAdapter(list)
+            binding.recyclerviewAdd.adapter = adapter
+        }
 
         // SAVE BUTTON
         binding.btnSave.setOnClickListener {
-
             val data = adapter.getFinalData()
+            if (id == 0) {
 
-            dbHelper.insertRow(REGISTRATION_TABLE, data)
+                dbHelper.insertRow(REGISTRATION_TABLE, data)
+                Toast.makeText(
+                    this,
+                    "Inserted successfully",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
 
-            Toast.makeText(
-                this,
-                "Inserted successfully",
-                Toast.LENGTH_LONG
-            ).show()
+                dbHelper.updateRowByTokenNumber(REGISTRATION_TABLE, data)
+
+                Toast.makeText(
+                    this,
+                    "Updated successfully",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            finish()
         }
     }
 }

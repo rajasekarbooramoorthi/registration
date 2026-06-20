@@ -186,4 +186,69 @@ class DynamicDBHelper(context: Context) :
 
         return list
     }
+
+    fun updateRowByTokenNumber(
+        tableName: String,
+        data: Map<String, String>
+    ): Int {
+
+        val db = writableDatabase
+        val cv = ContentValues()
+
+        // Get token number
+        val tokenNumber = data[TOKEN_NUMBER]?.toIntOrNull() ?: return 0
+
+        // Get all existing columns from the table
+        val existingColumns = getColumnNames(tableName).toMutableSet()
+
+        // Add primary key manually because getColumnNames() excludes it
+        existingColumns.add(TOKEN_NUMBER)
+
+        data.forEach { (key, value) ->
+
+            val column = normalizeColumnName(key)
+
+            // Ignore primary key
+            if (column == TOKEN_NUMBER) return@forEach
+
+            // Ignore columns that do not exist in the table
+            if (!existingColumns.contains(column)) return@forEach
+
+            cv.put(column, value)
+        }
+
+        return db.update(
+            tableName,
+            cv,
+            "$TOKEN_NUMBER = ?",
+            arrayOf(tokenNumber.toString())
+        )
+    }
+
+    fun getDataByTokenNumber(
+        tableName: String,
+        tokenNumber: Int
+    ): MutableMap<String, String>? {
+
+        val db = readableDatabase
+        val row = mutableMapOf<String, String>()
+
+        val cursor = db.rawQuery(
+            "SELECT * FROM $tableName WHERE $TOKEN_NUMBER = ?",
+            arrayOf(tokenNumber.toString())
+        )
+
+        if (cursor.moveToFirst()) {
+            for (i in 0 until cursor.columnCount) {
+                row[cursor.getColumnName(i)] = cursor.getString(i) ?: ""
+            }
+        }
+
+        cursor.close()
+
+        return row.ifEmpty { null }
+    }
+
+
+
 }
