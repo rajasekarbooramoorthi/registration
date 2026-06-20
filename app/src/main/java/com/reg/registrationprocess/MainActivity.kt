@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
         setSupportActionBar(toolbar)
 
         supportActionBar?.title = ""
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.hide()
         setToolbarInsetsActivity()
         dbHelper = DynamicDBHelper(this)
 

@@ -25,6 +25,7 @@ class ActivityAdd : AppCompatActivity() {
 
         binding = ActivityAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setToolbarInsetsActivity()
         dbHelper = DynamicDBHelper(this)
         binding.recyclerviewAdd.layoutManager = LinearLayoutManager(this)
 
