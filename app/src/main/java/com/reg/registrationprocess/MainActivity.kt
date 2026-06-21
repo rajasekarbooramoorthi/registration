@@ -107,18 +107,24 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
         val header = sheet.getRow(0)
 
         // 🔥 remove duplicate + normalize columns
-        val seen = mutableSetOf<String>()
         val columns = mutableListOf<String>()
+        val nameCount = mutableMapOf<String, Int>()
 
         for (i in 0 until header.lastCellNum) {
 
-            val rawName = header.getCell(i)?.toString() ?: ""
+            val rawName = header.getCell(i)?.toString().orEmpty()
             val cleanName = normalizeColumnName(rawName)
 
-            if (cleanName.isNotEmpty() && !seen.contains(cleanName)) {
-                seen.add(cleanName)
-                columns.add(cleanName)
+            val count = nameCount.getOrDefault(cleanName, 0)
+
+            val finalName = if (count == 0) {
+                cleanName
+            } else {
+                "${cleanName}_$count"
             }
+
+            nameCount[cleanName] = count + 1
+            columns.add(finalName)
         }
 
         // 🔥 create table (with system auto id inside helper)

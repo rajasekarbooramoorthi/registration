@@ -32,6 +32,8 @@ class DynamicDBHelper(context: Context) :
 
     fun createDynamicTable(tableName: String, columns: List<String>) {
 
+        println("Creating Table-->"+columns)
+
         val db = writableDatabase
 
         val cleanColumns = columns.map { normalizeColumnName(it) }
