@@ -136,7 +136,6 @@ class DynamicDBHelper(context: Context) :
                 db.execSQL("DROP TABLE IF EXISTS $tableName")
             }
         }
-
         cursor.close()
     }
 
@@ -201,7 +200,7 @@ class DynamicDBHelper(context: Context) :
         tableName: String,
         data: Map<String, String>
     ): Int {
-
+        println("updateRowByTokenNumber->"+data)
         val db = writableDatabase
         val cv = ContentValues()
 

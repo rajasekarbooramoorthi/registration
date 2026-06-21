@@ -1,6 +1,8 @@
 package com.reg.registrationprocess
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -9,11 +11,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.reg.registrationprocess.DBUtils.REGISTRATION_TABLE
 import com.reg.registrationprocess.interfaces.AdapterClickView
 import org.apache.poi.ss.usermodel.WorkbookFactory
+import androidx.core.net.toUri
 
 class MainActivity : AppCompatActivity(), AdapterClickView {
 
@@ -202,4 +207,22 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
         startActivity(intent)
     }
 
+    override fun callIntentInit(mobile: String) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CALL_PHONE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val intent = Intent(Intent.ACTION_CALL).apply {
+                data = ("tel:$mobile").toUri()
+            }
+            startActivity(intent)
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CALL_PHONE),
+                100
+            )
+        }
+    }
 }
