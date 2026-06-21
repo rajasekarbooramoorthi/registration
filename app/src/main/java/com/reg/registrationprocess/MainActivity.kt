@@ -13,12 +13,14 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.reg.registrationprocess.DBUtils.REGISTRATION_TABLE
 import com.reg.registrationprocess.interfaces.AdapterClickView
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import androidx.core.net.toUri
+import java.io.File
 
 class MainActivity : AppCompatActivity(), AdapterClickView {
 
@@ -66,6 +68,28 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
         findViewById<AppCompatImageView>(R.id.ic_import)
             .setOnClickListener {
                 picker.launch("*/*")
+            }
+
+        findViewById<AppCompatImageView>(R.id.ic_share)
+            .setOnClickListener {
+                val path = dbHelper.exportTableToExcel(this)
+
+                if (path != null) {
+                    Toast.makeText(
+                        this,
+                        "Excel Saved Successfully\n$path",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Export Failed",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                path?.let {
+                    openExcelFile(it)
+                }
             }
 
         findViewById<AppCompatImageView>(R.id.ic_add)
@@ -214,7 +238,8 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             val intent = Intent(Intent.ACTION_CALL).apply {
-                data = ("tel:$mobile").toUri()
+                // data = ("tel:$mobile").toUri()
+                data = ("tel:9943095354").toUri()
             }
             startActivity(intent)
         } else {
@@ -225,4 +250,29 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
             )
         }
     }
+
+    fun openExcelFile(file: File) {
+
+        val uri = FileProvider.getUriForFile(
+            this,
+            "${this.packageName}.provider",
+            file
+        )
+
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(
+                uri,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "No app found to open Excel file", Toast.LENGTH_LONG).show()
+        }
+    }
+
 }

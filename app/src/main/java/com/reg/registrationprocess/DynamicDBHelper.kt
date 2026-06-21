@@ -4,10 +4,14 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Environment
 import com.reg.registrationprocess.DBUtils.REGISTRATION_DATABASE
 import com.reg.registrationprocess.DBUtils.REGISTRATION_TABLE
 import com.reg.registrationprocess.DBUtils.TOKEN_ISSUED_MARKED_AS
 import com.reg.registrationprocess.DBUtils.TOKEN_NUMBER
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileOutputStream
 
 class DynamicDBHelper(context: Context) :
     SQLiteOpenHelper(context, REGISTRATION_DATABASE, null, 1) {
@@ -32,7 +36,7 @@ class DynamicDBHelper(context: Context) :
 
     fun createDynamicTable(tableName: String, columns: List<String>) {
 
-        println("Creating Table-->"+columns)
+        println("Creating Table-->" + columns)
 
         val db = writableDatabase
 
@@ -200,7 +204,7 @@ class DynamicDBHelper(context: Context) :
         tableName: String,
         data: Map<String, String>
     ): Int {
-        println("updateRowByTokenNumber->"+data)
+        println("updateRowByTokenNumber->" + data)
         val db = writableDatabase
         val cv = ContentValues()
 
@@ -273,5 +277,144 @@ class DynamicDBHelper(context: Context) :
         return exists
     }
 
+    fun exportTableToExcel(
+        context: Context,
+    ): File? {
 
+        return try {
+
+            val workbook = XSSFWorkbook()
+            val sheet = workbook.createSheet(REGISTRATION_TABLE)
+            val db = readableDatabase
+
+            val cursor = db.rawQuery("SELECT * FROM $REGISTRATION_TABLE", null)
+
+            val maxColumnLengths = IntArray(cursor.columnCount)
+
+            // Header
+            val headerRow = sheet.createRow(0)
+
+            for (i in 0 until cursor.columnCount) {
+                val header = cursor.getColumnName(i)
+                headerRow.createCell(i).setCellValue(header)
+                maxColumnLengths[i] = header.length
+            }
+
+            // Data
+            var rowIndex = 1
+
+            while (cursor.moveToNext()) {
+
+                val row = sheet.createRow(rowIndex++)
+
+                for (i in 0 until cursor.columnCount) {
+
+                    val value = cursor.getString(i) ?: ""
+                    row.createCell(i).setCellValue(value)
+
+                    if (value.length > maxColumnLengths[i]) {
+                        maxColumnLengths[i] = value.length
+                    }
+                }
+            }
+
+            cursor.close()
+
+            // Column width
+            for (i in maxColumnLengths.indices) {
+                sheet.setColumnWidth(
+                    i,
+                    (maxColumnLengths[i] + 3).coerceAtMost(50) * 256
+                )
+            }
+
+            val dir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+            if (dir != null && !dir.exists()) dir.mkdirs()
+
+            val file = File(dir, "$REGISTRATION_TABLE.xlsx")
+
+            FileOutputStream(file).use {
+                workbook.write(it)
+            }
+
+            workbook.close()
+
+            if (file.exists()) file else null
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun exportTableToExcel_(
+        context: Context,
+    ): String {
+
+        val workbook = XSSFWorkbook()
+        val sheet = workbook.createSheet(REGISTRATION_TABLE)
+        val db = readableDatabase
+
+        val cursor = db.rawQuery("SELECT * FROM $REGISTRATION_TABLE", null)
+
+        // Store maximum length of each column
+        val maxColumnLengths = IntArray(cursor.columnCount)
+
+        // Header Row
+        val headerRow = sheet.createRow(0)
+
+        for (i in 0 until cursor.columnCount) {
+            val header = cursor.getColumnName(i)
+            headerRow.createCell(i).setCellValue(header)
+            maxColumnLengths[i] = header.length
+        }
+
+        // Data Rows
+        var rowIndex = 1
+
+        while (cursor.moveToNext()) {
+
+            val row = sheet.createRow(rowIndex++)
+
+            for (i in 0 until cursor.columnCount) {
+
+                val value = cursor.getString(i) ?: ""
+
+                row.createCell(i).setCellValue(value)
+
+                if (value.length > maxColumnLengths[i]) {
+                    maxColumnLengths[i] = value.length
+                }
+            }
+        }
+
+        cursor.close()
+
+        // Set column width based on longest value
+        for (i in maxColumnLengths.indices) {
+
+            // Maximum width allowed by Excel
+            val width = ((maxColumnLengths[i] + 3).coerceAtMost(50)) * 256
+
+            sheet.setColumnWidth(i, width)
+        }
+
+        // Save file
+        val dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+            ?: throw Exception("Unable to access Documents directory")
+
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+
+        val file = File(dir, "$REGISTRATION_TABLE.xlsx")
+
+        FileOutputStream(file).use { output ->
+            workbook.write(output)
+        }
+
+        workbook.close()
+
+        return file.absolutePath
+    }
 }
