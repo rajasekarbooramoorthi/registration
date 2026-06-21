@@ -1,6 +1,7 @@
 package com.reg.registrationprocess
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
@@ -18,6 +19,15 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
 
     private lateinit var dbHelper: DynamicDBHelper
 
+    private
+    val DEFAULT_BG_COLOR: Int = Color.YELLOW
+
+    private
+    val DEFAULT_FG_COLOR: Int = Color.RED
+
+    private val textHighlighter: TextHighlighter = TextHighlighter()
+        .setBackgroundColor(DEFAULT_BG_COLOR)
+        .setForegroundColor(DEFAULT_FG_COLOR)
     private lateinit var adapter: EmployeeAdapter
     private lateinit var recycler: RecyclerView
     private val picker =
