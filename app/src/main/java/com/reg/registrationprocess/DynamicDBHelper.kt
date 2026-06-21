@@ -30,7 +30,6 @@ class DynamicDBHelper(context: Context) :
         return name
     }
 
-    // ✅ CREATE TABLE WITH SERIAL NUMBER
     fun createDynamicTable(tableName: String, columns: List<String>) {
 
         val db = writableDatabase
@@ -42,10 +41,19 @@ class DynamicDBHelper(context: Context) :
 
             append("CREATE TABLE IF NOT EXISTS $tableName (")
 
-            // 🔥 SERIAL NUMBER COLUMN
-            append("$TOKEN_NUMBER INTEGER PRIMARY KEY AUTOINCREMENT, $TOKEN_ISSUED_MARKED_AS INTEGER DEFAULT 0 ,")
+            // 🔥 Auto ID
+            append("$TOKEN_NUMBER INTEGER PRIMARY KEY AUTOINCREMENT, ")
+
+            // 🔥 Default status column (0 by default)
+            append("$TOKEN_ISSUED_MARKED_AS INTEGER DEFAULT 0")
+
+            if (cleanColumns.isNotEmpty()) {
+                append(", ")
+            }
+
+            // 🔥 Dynamic columns
             cleanColumns.forEachIndexed { index, col ->
-                append("[$col] TEXT")
+                append("[$col] VARCHAR")
 
                 if (index != cleanColumns.size - 1) {
                     append(", ")
@@ -60,7 +68,7 @@ class DynamicDBHelper(context: Context) :
 
     // ✅ INSERT ROW (no need to insert id)
     fun insertRow(tableName: String, data: Map<String, String>) {
-
+        println(data)
         val db = writableDatabase
         val cv = ContentValues()
 
@@ -249,6 +257,20 @@ class DynamicDBHelper(context: Context) :
         return row.ifEmpty { null }
     }
 
+    fun isTableExists(): Boolean {
+
+        val db = readableDatabase
+
+        val cursor = db.rawQuery(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+            arrayOf(REGISTRATION_TABLE)
+        )
+
+        val exists = cursor.count > 0
+        cursor.close()
+
+        return exists
+    }
 
 
 }

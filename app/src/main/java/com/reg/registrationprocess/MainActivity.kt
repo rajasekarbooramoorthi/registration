@@ -19,10 +19,7 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
     private lateinit var dbHelper: DynamicDBHelper
 
     private lateinit var adapter: EmployeeAdapter
-
-    private val dataList =
-        mutableListOf<Map<String, String>>()
-
+    private lateinit var recycler: RecyclerView
     private val picker =
         registerForActivityResult(
             ActivityResultContracts.GetContent()
@@ -47,20 +44,10 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
         setToolbarInsetsActivity()
         dbHelper = DynamicDBHelper(this)
 
-        val recycler =
-            findViewById<RecyclerView>(R.id.recyclerView)
-
+        recycler = findViewById(R.id.recyclerView)
         recycler.layoutManager =
             LinearLayoutManager(this)
-
-        val result =
-            dbHelper.getAllData(
-                REGISTRATION_TABLE
-            )
-        adapter = EmployeeAdapter(result, this)
-
-        recycler.adapter = adapter
-
+        loadData()
         findViewById<AppCompatImageView>(R.id.ic_import)
             .setOnClickListener {
                 picker.launch("*/*")
@@ -87,24 +74,24 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
         findViewById<SearchView>(R.id.searchView)
             .setOnQueryTextListener(
                 object : SearchView.OnQueryTextListener {
-
                     override fun onQueryTextSubmit(query: String?) = true
-
                     override fun onQueryTextChange(
                         newText: String?
                     ): Boolean {
+                        val isReady = dbHelper.isTableExists()
 
-                        val result =
-                            dbHelper.search(
-                                REGISTRATION_TABLE,
-                                newText ?: "",
-                            )
+                        if (isReady) {
 
-                        dataList.clear()
-                        println("Countt--->" + result.size)
-                        dataList.addAll(result)
-
-                        adapter.notifyDataSetChanged()
+                            val result =
+                                dbHelper.search(
+                                    REGISTRATION_TABLE,
+                                    newText ?: "",
+                                )
+                            println("Countt--->" + result.size)
+                            adapter = EmployeeAdapter(result, this@MainActivity)
+                            recycler.adapter = adapter
+                            adapter.notifyDataSetChanged()
+                        }
                         return true
                     }
                 })
@@ -148,7 +135,6 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
             val map = mutableMapOf<String, String>()
 
             for (c in columns.indices) {
-
                 val cellValue = row.getCell(c)?.toString() ?: ""
                 map[columns[c]] = cellValue
             }
@@ -161,6 +147,7 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
 
         workbook.close()
         input?.close()
+        loadData()
     }
 
     private fun normalizeColumnName(input: String): String {
@@ -174,6 +161,19 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
         return name
     }
 
+    fun loadData() {
+        val isReady = dbHelper.isTableExists()
+
+        if (isReady) {
+            val result =
+                dbHelper.getAllData(
+                    REGISTRATION_TABLE
+                )
+            adapter = EmployeeAdapter(result, this)
+
+            recycler.adapter = adapter
+        }
+    }
 
     override fun checkBox(id: Int, status: Int) {
         dbHelper.updateTokenStatus(id, status)
