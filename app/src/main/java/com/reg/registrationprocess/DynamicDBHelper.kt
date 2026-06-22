@@ -86,6 +86,19 @@ class DynamicDBHelper(context: Context) :
         db.insert(tableName, null, cv)
     }
 
+    fun insertRowNew(tableName: String, data: Map<String, String>) {
+        println(data)
+        val db = writableDatabase
+        val cv = ContentValues()
+
+        data.forEach { (key, value) ->
+            //  val cleanKey = normalizeColumnName(key)
+            cv.put(key, value)
+        }
+
+        db.insert(tableName, null, cv)
+    }
+
 
     // 🔥 SEARCH (includes serial number too)
     fun search(tableName: String, text: String): MutableList<Map<String, String>> {
@@ -170,6 +183,14 @@ class DynamicDBHelper(context: Context) :
 
         db.execSQL(
             "UPDATE $REGISTRATION_TABLE SET $TOKEN_ISSUED_MARKED_AS = $status WHERE $TOKEN_NUMBER = $id"
+        )
+    }
+
+    fun deleteRow(id: Int) {
+        val db = writableDatabase
+        db.execSQL(
+            "DELETE FROM $REGISTRATION_TABLE WHERE $TOKEN_NUMBER = ?",
+            arrayOf(id)
         )
     }
 

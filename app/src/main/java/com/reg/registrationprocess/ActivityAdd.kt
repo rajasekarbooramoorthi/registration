@@ -60,7 +60,7 @@ class ActivityAdd : AppCompatActivity() {
             val data = adapter.getFinalData()
             if (id == 0) {
 
-                dbHelper.insertRow(REGISTRATION_TABLE, data)
+                dbHelper.insertRowNew(REGISTRATION_TABLE, data)
                 Toast.makeText(
                     this,
                     "Inserted successfully",

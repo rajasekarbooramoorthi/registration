@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:minHeight="@dimen/_99ssp"
+    android:orientation="vertical"
+    android:padding="@dimen/_24ssp">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sans_bold"
+        android:text="@string/delete_item"
+        android:textColor="#000"
+        android:textSize="@dimen/_15ssp" />
+
+    <TextView
+        android:id="@+id/txtMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12ssp"
+        android:fontFamily="@font/sans_regular"
+        android:text="@string/are_you_sure_you_want_to_delete_all_the_data"
+        android:textSize="@dimen/_14ssp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15ssp"
+        android:layout_marginBottom="@dimen/_10ssp"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_15ssp"
+            android:background="@drawable/button_selector_negative"
+            android:fontFamily="@font/sans_regular"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/_14ssp" />
+
+        <Button
+            android:id="@+id/btnOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_7ssp"
+            android:background="@drawable/button_selector"
+            android:fontFamily="@font/sans_regular"
+            android:text="@string/delete"
+            android:textAllCaps="false"
+
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/_14ssp" />
+
+    </LinearLayout>
+
+</LinearLayout>

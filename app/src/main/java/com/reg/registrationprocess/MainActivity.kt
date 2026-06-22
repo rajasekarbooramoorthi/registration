@@ -1,11 +1,16 @@
 package com.reg.registrationprocess
 
 import android.Manifest
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +25,7 @@ import com.reg.registrationprocess.DBUtils.REGISTRATION_TABLE
 import com.reg.registrationprocess.interfaces.AdapterClickView
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import androidx.core.net.toUri
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.io.File
 
 class MainActivity : AppCompatActivity(), AdapterClickView {
@@ -51,10 +57,6 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-
-        setSupportActionBar(toolbar)
-
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.hide()
@@ -101,12 +103,7 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
 
         findViewById<AppCompatImageView>(R.id.ic_reset)
             .setOnLongClickListener {
-                dbHelper.deleteAllData()
-                Toast.makeText(
-                    this,
-                    "All data has been reset successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showCustomDialog()
                 true
             }
 
@@ -273,6 +270,44 @@ class MainActivity : AppCompatActivity(), AdapterClickView {
         } catch (e: Exception) {
             Toast.makeText(this, "No app found to open Excel file", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun showCustomDialog() {
+
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(R.layout.dialog_custom)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        // dialog.setCancelable(false)
+
+        val txtTitle = dialog.findViewById<TextView>(R.id.txtTitle)
+        val txtMessage = dialog.findViewById<TextView>(R.id.txtMessage)
+        val btnCancel = dialog.findViewById<Button>(R.id.btnCancel)
+        val btnOk = dialog.findViewById<Button>(R.id.btnOk)
+
+        txtTitle?.text = "Delete Item"
+        txtMessage?.text = "Are you sure you want to delete this item?"
+
+        btnCancel?.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnOk?.setOnClickListener {
+            dbHelper.deleteAllData()
+            Toast.makeText(
+                this,
+                "All data has been reset successfully",
+                Toast.LENGTH_SHORT
+            ).show()
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
+
     }
 
 }

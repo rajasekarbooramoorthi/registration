@@ -5,23 +5,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_7ssp"
         android:orientation="horizontal"
         android:weightSum="3">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_20ssp"
+            android:layout_height="@dimen/_30ssp"
             android:layout_marginStart="@dimen/_10ssp"
             android:layout_weight="2.7"
+            android:padding="@dimen/_3ssp"
             app:searchIcon="@drawable/ic_search" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -29,7 +27,7 @@
             android:layout_width="@dimen/_20ssp"
             android:layout_height="@dimen/_20ssp"
             android:layout_gravity="center|center_horizontal"
-            android:src="@drawable/ic_add" />
+            app:srcCompat="@drawable/ic_add" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ic_share"
@@ -37,7 +35,7 @@
             android:layout_height="@dimen/_20ssp"
             android:layout_gravity="center|center_horizontal"
             android:layout_marginStart="@dimen/_14ssp"
-            android:src="@drawable/ic_share" />
+            app:srcCompat="@drawable/ic_share" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ic_import"
@@ -45,7 +43,7 @@
             android:layout_height="@dimen/_20ssp"
             android:layout_gravity="center|center_horizontal"
             android:layout_marginStart="@dimen/_14ssp"
-            android:src="@drawable/ic_upload" />
+            app:srcCompat="@drawable/ic_upload" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ic_reset"
@@ -53,14 +51,14 @@
             android:layout_height="@dimen/_20ssp"
             android:layout_gravity="center|center_horizontal"
             android:layout_marginStart="@dimen/_14ssp"
-            android:src="@drawable/ic_reset" />
+            app:srcCompat="@drawable/ic_reset" />
 
     </LinearLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_7ssp" />
 
 </LinearLayout>

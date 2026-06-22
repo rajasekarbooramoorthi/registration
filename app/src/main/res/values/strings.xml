@@ -3,4 +3,8 @@
     <string name="import_excel">Import Excel</string>
     <string name="save">Save</string>
     <string name="serial_number">Serial Number</string>
+    <string name="delete_item">Delete Item</string>
+    <string name="are_you_sure_you_want_to_delete_all_the_data">Are you sure you want to delete all the data?</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
 </resources>
