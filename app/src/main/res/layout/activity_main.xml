@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -18,40 +19,41 @@
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.7" />
+            android:layout_height="@dimen/_20ssp"
+            android:layout_marginStart="@dimen/_10ssp"
+            android:layout_weight="2.7"
+            app:searchIcon="@drawable/ic_search" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ic_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_20ssp"
+            android:layout_height="@dimen/_20ssp"
             android:layout_gravity="center|center_horizontal"
             android:src="@drawable/ic_add" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ic_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_20ssp"
+            android:layout_height="@dimen/_20ssp"
             android:layout_gravity="center|center_horizontal"
             android:layout_marginStart="@dimen/_14ssp"
             android:src="@drawable/ic_share" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ic_import"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_20ssp"
+            android:layout_height="@dimen/_20ssp"
             android:layout_gravity="center|center_horizontal"
             android:layout_marginStart="@dimen/_14ssp"
             android:src="@drawable/ic_upload" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ic_reset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_20ssp"
+            android:layout_height="@dimen/_20ssp"
             android:layout_gravity="center|center_horizontal"
             android:layout_marginStart="@dimen/_14ssp"
             android:src="@drawable/ic_reset" />
-
 
     </LinearLayout>
 

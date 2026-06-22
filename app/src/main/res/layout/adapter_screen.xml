@@ -39,22 +39,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_14ssp"
-                android:layout_marginTop="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_5ssp"
                 android:layout_marginBottom="@dimen/_5ssp"
                 android:fontFamily="@font/sans_bold"
                 android:textColor="@color/hintColor"
-                android:textSize="@dimen/_19ssp" />
+                android:textSize="@dimen/_14ssp" />
 
             <TextView
                 android:id="@+id/txtMobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_14ssp"
-                android:layout_marginTop="@dimen/_5ssp"
                 android:layout_marginBottom="@dimen/_10ssp"
                 android:fontFamily="@font/sans_bold"
-                android:textColor="@color/hintColor"
-                android:textSize="@dimen/_19ssp" />
+                android:textColor="#81C784"
+                android:textSize="@dimen/_14ssp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,7 +70,7 @@
                     android:layout_marginStart="@dimen/_14ssp"
                     android:fontFamily="@font/sans_regular"
                     android:text="@string/serial_number"
-                    android:textSize="@dimen/_16ssp" />
+                    android:textSize="@dimen/_14ssp" />
 
                 <TextView
                     android:id="@+id/textSerialNumber"
@@ -82,17 +81,19 @@
                     android:textSize="@dimen/_14ssp" />
 
                 <!-- Push remaining views to the right -->
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10ssp"
-                    android:layout_marginEnd="@dimen/_8ssp" />
 
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_10ssp"
+                    android:layout_marginEnd="@dimen/_10ssp" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ic_add"
